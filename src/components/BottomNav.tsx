@@ -1,4 +1,5 @@
 import React from 'react';
+import { motion } from 'framer-motion';
 import { Gift, Heart, ShoppingBag, Trophy, User } from 'lucide-react';
 import { ActiveTab, useApp } from '../context/AppContext';
 
@@ -31,16 +32,25 @@ export const BottomNav: React.FC = () => {
               <button
                 key={item.id}
                 onClick={() => handleTabClick(item.id)}
-                className={`flex items-center gap-2 px-4 py-2 text-sm font-semibold rounded-xl transition-all ${
+                className={`relative flex items-center gap-2 px-4 py-2 text-sm font-semibold rounded-xl transition-colors duration-150 cursor-pointer ${
                   isActive
-                    ? 'bg-amber-500 text-slate-950 shadow-sm shadow-amber-500/20'
-                    : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800'
+                    ? 'text-slate-950 font-bold'
+                    : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800/60'
                 }`}
               >
-                <Icon className={`w-4 h-4 ${isActive ? 'text-slate-950' : 'text-slate-500 dark:text-slate-400'}`} />
-                <span>{item.label}</span>
+                {isActive && (
+                  <motion.div
+                    layoutId="desktopActiveTabIndicator"
+                    className="absolute inset-0 bg-amber-500 rounded-xl shadow-sm shadow-amber-500/25"
+                    transition={{ type: 'spring', stiffness: 450, damping: 32 }}
+                  />
+                )}
+                <Icon className={`relative z-10 w-4 h-4 ${isActive ? 'text-slate-950' : 'text-slate-500 dark:text-slate-400'}`} />
+                <span className="relative z-10">{item.label}</span>
                 {item.id === 'favoris' && favorites.length > 0 && (
-                  <span className="text-[11px] font-bold px-1.5 py-0.2 bg-white/80 dark:bg-slate-800 text-slate-900 dark:text-white rounded-full">
+                  <span className={`relative z-10 text-[11px] font-bold px-1.5 py-0.2 rounded-full ${
+                    isActive ? 'bg-slate-950/20 text-slate-950' : 'bg-slate-100 dark:bg-slate-800 text-slate-900 dark:text-white'
+                  }`}>
                     {favorites.length}
                   </span>
                 )}
@@ -63,14 +73,21 @@ export const BottomNav: React.FC = () => {
               <button
                 key={item.id}
                 onClick={() => handleTabClick(item.id)}
-                className={`relative flex flex-col items-center justify-center h-full min-h-[44px] transition-all active:scale-90 ${
+                className={`relative flex flex-col items-center justify-center h-full min-h-[44px] transition-all active:scale-95 cursor-pointer ${
                   isActive ? 'text-amber-500' : 'text-slate-400 hover:text-slate-600 dark:text-slate-500 dark:hover:text-slate-300'
                 }`}
               >
-                <div className="relative">
+                {isActive && (
+                  <motion.div
+                    layoutId="mobileActiveTabGlow"
+                    className="absolute inset-x-1.5 inset-y-1 bg-amber-500/10 dark:bg-amber-400/10 rounded-xl"
+                    transition={{ type: 'spring', stiffness: 450, damping: 32 }}
+                  />
+                )}
+                <div className="relative z-10">
                   <Icon
-                    className={`w-5 h-5 transition-transform ${
-                      isActive ? 'stroke-[2.5px] scale-110' : 'stroke-[1.75px]'
+                    className={`w-5 h-5 transition-transform duration-200 ${
+                      isActive ? 'stroke-[2.5px] scale-110 text-amber-500' : 'stroke-[1.75px]'
                     }`}
                   />
                   {item.id === 'favoris' && favorites.length > 0 && (
@@ -80,16 +97,20 @@ export const BottomNav: React.FC = () => {
                   )}
                 </div>
                 <span
-                  className={`text-[10px] tracking-tight mt-1 transition-all ${
+                  className={`relative z-10 text-[10px] tracking-tight mt-1 transition-all ${
                     isActive ? 'font-bold text-slate-900 dark:text-white' : 'font-medium text-slate-400 dark:text-slate-500'
                   }`}
                 >
                   {item.label}
                 </span>
 
-                {/* Active indicator dot */}
+                {/* Animated active indicator dot/pill */}
                 {isActive && (
-                  <span className="absolute bottom-1 w-1 h-1 bg-amber-500 rounded-full" />
+                  <motion.span
+                    layoutId="mobileActiveIndicator"
+                    className="absolute bottom-1 w-3 h-0.5 bg-amber-500 rounded-full"
+                    transition={{ type: 'spring', stiffness: 500, damping: 35 }}
+                  />
                 )}
               </button>
             );
