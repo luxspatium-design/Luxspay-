@@ -1,0 +1,8 @@
+{
+  "name": "Remix LUXSPAY - Recharge Jeux Vidéo",
+  "description": "Plateforme moderne et sécurisée de recharge de jeux vidéo en Afrique (XOF/XAF).",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
